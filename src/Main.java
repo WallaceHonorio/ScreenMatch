@@ -1,4 +1,6 @@
+import honorio.screenmatch.calculations.RecommendationFilter;
 import honorio.screenmatch.calculations.TimeCalculator;
+import honorio.screenmatch.models.Episode;
 import honorio.screenmatch.models.Film;
 import honorio.screenmatch.models.Series;
 
@@ -33,6 +35,16 @@ public class Main {
         calculator.add(serie1);
 
         System.out.println("Total time: " +calculator.getTotalTime());
+
+        Episode firstEpisode = new Episode();
+        firstEpisode.setNumber(1);
+        firstEpisode.setSeries(serie1);
+        firstEpisode.setTotalViews(300);
+
+        RecommendationFilter filter = new RecommendationFilter();
+        filter.filter(film1);
+        filter.filter(film2);
+        filter.filter(firstEpisode);
     }
 
 }

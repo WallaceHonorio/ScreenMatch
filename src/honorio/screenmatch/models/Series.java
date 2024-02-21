@@ -1,5 +1,7 @@
 package honorio.screenmatch.models;
 
+import honorio.screenmatch.calculations.Classifiable;
+
 public class Series extends Title {
     private int seasons;
     private boolean active;
@@ -42,4 +44,6 @@ public class Series extends Title {
     public int getDurationMinutes() {
         return seasons * episodesPerSeason * minutesPerEpisodes;
     }
+
+
 }

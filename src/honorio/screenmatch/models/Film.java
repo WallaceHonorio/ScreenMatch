@@ -1,6 +1,8 @@
 package honorio.screenmatch.models;
 
-public class Film extends Title{
+import honorio.screenmatch.calculations.Classifiable;
+
+public class Film extends Title implements Classifiable {
 
     private String director;
 
@@ -12,4 +14,8 @@ public class Film extends Title{
         this.director = director;
     }
 
+    @Override
+    public int getClassification() {
+        return (int) getMedia() / 2;
+    }
 }
