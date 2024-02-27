@@ -53,5 +53,5 @@ public class Series extends Title {
     public String toString(){
         return "Series: " + this.getName() + " (" + this.getReleaseYear() + ")";
     }
-    
+
 }

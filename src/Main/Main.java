@@ -1,3 +1,5 @@
+package Main;
+
 import honorio.screenmatch.calculations.RecommendationFilter;
 import honorio.screenmatch.calculations.TimeCalculator;
 import honorio.screenmatch.models.Episode;
@@ -51,6 +53,7 @@ public class Main {
         list.add(serie1);
 
         System.out.println(list.toString());
+
     }
 
 }
