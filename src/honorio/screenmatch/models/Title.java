@@ -1,5 +1,5 @@
 package honorio.screenmatch.models;
-public class Title {
+public class Title implements Comparable<Title>  {
 
     private String name;
     private int releaseYear;
@@ -73,5 +73,10 @@ public class Title {
 
     public double getTotalReviews() {
         return totalReviews;
+    }
+
+    @Override
+    public int compareTo(Title anotherTitle) {
+        return this.getName().compareTo(anotherTitle.getName());
     }
 }
