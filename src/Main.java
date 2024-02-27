@@ -3,9 +3,14 @@ import honorio.screenmatch.calculations.TimeCalculator;
 import honorio.screenmatch.models.Episode;
 import honorio.screenmatch.models.Film;
 import honorio.screenmatch.models.Series;
+import honorio.screenmatch.models.Title;
+
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
+
+        ArrayList<Title> list = new ArrayList<>();
 
         Film film1 = new Film();
         film1.setName("The Matrix");
@@ -45,6 +50,13 @@ public class Main {
         filter.filter(film1);
         filter.filter(film2);
         filter.filter(firstEpisode);
+
+
+        list.add(film1);
+        list.add(film2);
+        list.add(serie1);
+
+        System.out.println(list.toString());
     }
 
 }

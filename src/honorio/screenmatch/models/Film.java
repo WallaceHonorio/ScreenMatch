@@ -18,4 +18,9 @@ public class Film extends Title implements Classifiable {
     public int getClassification() {
         return (int) getMedia() / 2;
     }
+
+    @Override
+    public String toString(){
+        return "Film: " + this.getName() + " (" + this.getReleaseYear() + ")";
+    }
 }
