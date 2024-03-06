@@ -1,7 +1,13 @@
 package honorio.screenmatch.models;
+
+import com.google.gson.annotations.SerializedName;
+import honorio.screenmatch.exception.YearConversationErrorException;
+
 public class Title implements Comparable<Title>  {
 
+    @SerializedName("Title")
     private String name;
+    @SerializedName("Year")
     private int releaseYear;
     private int durationMinutes;
     private boolean includedPlan;
@@ -11,6 +17,16 @@ public class Title implements Comparable<Title>  {
     public Title(String name, int releaseYear) {
         this.name = name;
         this.releaseYear = releaseYear;
+    }
+
+    public Title(TitleOmdb titleOmdb) {
+        this.name = titleOmdb.title();
+
+        if(titleOmdb.year().length() > 4) {
+            throw new YearConversationErrorException("Não consegui converter o ano porque tem mais de 04 caracteres.");
+        }
+        this.releaseYear = Integer.valueOf(titleOmdb.year());
+        this.durationMinutes = Integer.valueOf(titleOmdb.runtime().substring(0,2));
     }
 
     public void setSumEvaluations(double sumEvaluations) {
@@ -45,6 +61,18 @@ public class Title implements Comparable<Title>  {
 
     public int getReleaseYear() {
         return releaseYear;
+    }
+
+    @Override
+    public String toString() {
+        return "Film{" +
+                "\n" + "Title=" + name +
+                "\n" + "Year=" + releaseYear +
+                "\n" + "Duration=" + durationMinutes +
+//                "\n" + '\'' + "includedPlan=" + includedPlan +
+//                "\n" + '\'' + "sumEvaluations=" + sumEvaluations +
+//                "\n" + '\'' + "totalReviews=" + totalReviews +
+                "\n}";
     }
 
     public void setReleaseYear(int releaseYear) {
