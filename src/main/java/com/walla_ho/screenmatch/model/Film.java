@@ -1,31 +1,22 @@
 package com.walla_ho.screenmatch.model;
-/*
-import com.walla_ho.screenmatch.calculations.Classifiable;
 
-public class Film extends Title implements Classifiable {
+public class Film {
 
-    private String director;
+    private String title;
+    private Integer year;
+    private Integer runtime;
 
-    public Film(String name, int releaseYear) {
-        super(name, releaseYear);
-    }
-
-    public String getDirector() {
-        return this.director;
-    }
-
-    public void setDirector(String director) {
-        this.director = director;
+    public Film(DataFilm dataFilm) {
+        this.title = dataFilm.title();
+        this.year = Integer.valueOf(dataFilm.year());
+        this.runtime = Integer.valueOf(dataFilm.runtime());
     }
 
     @Override
-    public int getClassification() {
-        return (int) getMedia() / 2;
-    }
-
-    @Override
-    public String toString(){
-        return "Film: " + this.getName() + " (" + this.getReleaseYear() + ")";
+    public String toString() {
+        return "Film='" + title + '\'' +
+                ", year=" + year +
+                ", runtime=" + runtime +
+                '}';
     }
 }
-*/

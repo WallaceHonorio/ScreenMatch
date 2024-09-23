@@ -9,9 +9,6 @@ public class Episode {
     private Integer season;
     private Integer episode;
     private Double imdbRating;
-
-
-
     private LocalDate released;
 
     public Episode(Integer numberSeason, DataEpisode dataEpisode) {
@@ -30,8 +27,6 @@ public class Episode {
         } catch (DateTimeParseException ex){
             this.released = LocalDate.ofEpochDay(0);
         }
-
-
     }
 
     public String getTitle() {

@@ -7,6 +7,8 @@ import com.walla_ho.screenmatch.model.Episode;
 import com.walla_ho.screenmatch.service.ConsumeAPI;
 import com.walla_ho.screenmatch.service.DataConvert;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -69,5 +71,21 @@ public class main {
                 ).collect(Collectors.toList());
 
         episodes.forEach(System.out::println);
+
+        System.out.println("\nFrom what year do you want to see the episodes?");
+        var year = read.nextInt();
+        read.nextLine();
+
+        LocalDate searchDate = LocalDate.of(year, 1, 1);
+
+//         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        episodes.stream()
+                .filter(e -> e.getReleased() != null && e.getReleased().isAfter(searchDate))
+                .forEach(e -> System.out.println(
+                        "Temporada: " + e.getSeason() +
+                                ", Episode: " + e.getTitle() +
+                                ", Released: " + e.getReleased()
+                        ));
     }
 }
