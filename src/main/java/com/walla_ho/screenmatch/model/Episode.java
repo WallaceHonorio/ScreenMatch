@@ -1,53 +1,85 @@
 package com.walla_ho.screenmatch.model;
-/*
-import com.walla_ho.screenmatch.calculations.Classifiable;
 
-public class Episode implements Classifiable {
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
-    private int number;
-    private String name;
-    private Series series;
-    private int totalViews;
+public class Episode {
 
-    public int getNumber() {
-        return number;
+    private String title;
+    private Integer season;
+    private Integer episode;
+    private Double imdbRating;
+
+
+
+    private LocalDate released;
+
+    public Episode(Integer numberSeason, DataEpisode dataEpisode) {
+        this.season = numberSeason;
+        this.episode = dataEpisode.episode();
+        this.title = dataEpisode.title();
+
+        try{
+            this.imdbRating = Double.valueOf(dataEpisode.imdbRating());
+        } catch (NumberFormatException ex){
+            this.imdbRating = 0.0;
+        }
+
+        try{
+            this.released = LocalDate.parse(dataEpisode.released());
+        } catch (DateTimeParseException ex){
+            this.released = LocalDate.ofEpochDay(0);
+        }
+
+
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public String getTitle() {
+        return title;
     }
 
-    public String getName() {
-        return name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Integer getSeason() {
+        return season;
     }
 
-    public Series getSeries() {
-        return series;
+    public void setSeason(Integer season) {
+        this.season = season;
     }
 
-    public void setSeries(Series series) {
-        this.series = series;
+    public Integer getEpisode() {
+        return episode;
     }
 
-    public int getTotalViews() {
-        return totalViews;
+    public void setEpisode(Integer episode) {
+        this.episode = episode;
     }
 
-    public void setTotalViews(int totalViews) {
-        this.totalViews = totalViews;
+    public Double getImdbRating() {
+        return imdbRating;
+    }
+
+    public void setImdbRating(Double imdbRating) {
+        this.imdbRating = imdbRating;
+    }
+
+    public LocalDate getReleased() {
+        return released;
+    }
+
+    public void setReleased(LocalDate released) {
+        this.released = released;
     }
 
     @Override
-    public int getClassification() {
-        if (totalViews > 100) {
-            return 4;
-        } else {
-            return 2;
-        }
+    public String toString() {
+        return  "season=" + season +
+                ", episode=" + episode +
+                ", title='" + title + '\'' +
+                ", imdbRating=" + imdbRating +
+                ", released=" + released;
     }
 }
-*/
