@@ -21,108 +21,53 @@ public class main {
     private final String  APIKEY = "&apikey=6585022c";
 
     public void showMenu(){
-        System.out.println("Write down the serie name:");
-        var serie_name = read.nextLine();
+        var menu = """
+                1 - Search by series
+                2 - Search by episodes
+                
+                0 - Logout                                 
+                """;
 
-        //search
-        var json = consumeAPI.getData( ADDRESS + serie_name.replaceAll(" ", "+") + APIKEY);
+        System.out.println(menu);
+        var opcao = read.nextInt();
+        read.nextLine();
 
-        List<DataSeason> seasons = new ArrayList<>();
-        DataSerie serie = convert.consumeData(json, DataSerie.class);
-
-//        System.out.println(serie);
-
-        for( int i = 1; i <= serie.totalSeasons(); i++ ){
-            json = consumeAPI.getData( ADDRESS + serie_name.replaceAll(" ", "+") + "&season=" + i + APIKEY);
-            DataSeason season = convert.consumeData(json, DataSeason.class);
-            seasons.add(season);
+        switch (opcao) {
+            case 1:
+                searchSerieWeb();
+                break;
+            case 2:
+                searchEpisodeBySerie();
+                break;
+            case 0:
+                System.out.println("Leaving...");
+                break;
+            default:
+                System.out.println("Invalid option");
         }
-//        seasons.forEach(System.out::println);
+    }
 
+    private void searchSerieWeb() {
+        DataSerie data = getDataSerie();
+        System.out.println(data);
+    }
 
-        //=================================================================================
-//        for( int s = 0; s < serie.totalSeasons(); s++ ){
-//            List<DataEpisode> episodes = seasons.get(s).episodes();
-//            for( int e = 0; e < seasons.size(); e++ ){
-//                System.out.println(episodes.get(e).title());
-//            }
-//        }
-        //Objeto(parametro -> expressaop)
-//        seasons.forEach(s -> s.episodes().forEach(e -> System.out.println(e.title())));
+    private DataSerie getDataSerie() {
+        System.out.println("Write the serie name to search:");
+        var nameSerie = read.nextLine();
+        var json = consumeAPI.getData(ADDRESS + nameSerie.replace(" ", "+") + APIKEY);
+        return convert.consumeData(json, DataSerie.class);
+    }
 
-        //=================================================================================
-        //toList = Lista Imutavel
-        //Collectors.toList() = Lista Mutavel
-//        List<DataEpisode> dataEpisodes = seasons.stream()
-//                .flatMap(s -> s.episodes().stream())
-//                .toList(); //.collect(Collectors.toList());
-//
-//        System.out.println("\nTop 5 episodes:");
-//        dataEpisodes.stream()
-//                .filter(e -> !e.imdbRating().equalsIgnoreCase("N/A"))
-//                .peek(e -> System.out.println("First filter (N/A) " + e))
-//                .sorted(Comparator.comparing(DataEpisode::imdbRating).reversed())
-//                .peek(e -> System.out.println("Ordenation " + e))
-//                .limit(5)
-//                .peek(e -> System.out.println("Limit " + e))
-//                .map(e -> e.title().toUpperCase())
-//                .peek(e -> System.out.println("Map " + e))
-//                .forEach(System.out::println);
+    private void searchEpisodeBySerie(){
+        DataSerie dataSerie = getDataSerie();
+        List<DataSeason> temporadas = new ArrayList<>();
 
-        System.out.println("\nEpisodes list:");
-        List<Episode> episodes = seasons.stream()
-                .flatMap(s -> s.episodes().stream()
-                        .map(d -> new Episode(s.season(), d))
-                ).collect(Collectors.toList());
-
-        episodes.forEach(System.out::println);
-
-        //=================================================================================
-//        System.out.println("\nFrom what year do you want to see the episodes?");
-//        var year = read.nextInt();
-//        read.nextLine();
-//
-//        LocalDate searchDate = LocalDate.of(year, 1, 1);
-//
-////         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-//
-//        episodes.stream()
-//                .filter(e -> e.getReleased() != null && e.getReleased().isAfter(searchDate))
-//                .forEach(e -> System.out.println(
-//                        "Temporada: " + e.getSeason() +
-//                                ", Episode: " + e.getTitle() +
-//                                ", Released: " + e.getReleased()
-//                ));
-
-        //=================================================================================
-//        System.out.println("\nWhat episode name you want:");
-//        var partTitle = read.nextLine();
-//
-//        Optional<Episode> first = episodes.stream()
-//                .filter(e -> e.getTitle().toUpperCase().contains(partTitle.toUpperCase()))
-//                .findFirst();
-//
-//        if(first.isPresent()){
-//            System.out.println("Founded episode!");
-//            System.out.println("Season: " + first.get().getSeason());
-//        } else {
-//            System.out.println("Founded not episode!");
-//        }
-
-        Map<Integer, Double> ratingBySeason = episodes.stream()
-                .filter(e -> e.getImdbRating() > 0.0)
-                .collect(Collectors.groupingBy(Episode::getSeason,
-                        Collectors.averagingDouble(Episode::getImdbRating)));
-
-        System.out.println(ratingBySeason);
-
-        DoubleSummaryStatistics est = (DoubleSummaryStatistics) episodes.stream()
-                .filter(e -> e.getImdbRating() > 0.0)
-                .collect(Collectors.summarizingDouble(Episode::getImdbRating));
-
-        System.out.println("Average: " + est.getAverage());
-        System.out.println("Best: " + est.getMax());
-        System.out.println("Worst: " + est.getMin());
-        System.out.println("Amount: " + est.getCount());
+        for (int i = 1; i <= dataSerie.totalSeasons(); i++) {
+            var json = consumeAPI.getData(ADDRESS + dataSerie.title().replace(" ", "+") + "&season=" + i + APIKEY);
+            DataSeason dataSeason = convert.consumeData(json, DataSeason.class);
+            temporadas.add(dataSeason);
+        }
+        temporadas.forEach(System.out::println);
     }
 }
