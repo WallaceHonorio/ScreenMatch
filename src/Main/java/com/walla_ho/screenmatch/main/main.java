@@ -19,36 +19,51 @@ public class main {
     private DataConvert convert = new DataConvert();
     private final String  ADDRESS = "http://www.omdbapi.com/?t=";
     private final String  APIKEY = "&apikey=6585022c";
+    private List<DataSerie> listSerie = new ArrayList<>();
+
 
     public void showMenu(){
-        var menu = """
-                1 - Search by series
-                2 - Search by episodes
-                
-                0 - Logout                                 
-                """;
+        var opcao = -1;
+        while(opcao != 0) {
+            var menu = """
+                    1 - Search by series.
+                    2 - Search by episodes.
+                    3 - List series.
+                    
+                    0 - Logout                                 
+                    """;
 
-        System.out.println(menu);
-        var opcao = read.nextInt();
-        read.nextLine();
+            System.out.println(menu);
+            opcao = read.nextInt();
+            read.nextLine();
 
-        switch (opcao) {
-            case 1:
-                searchSerieWeb();
-                break;
-            case 2:
-                searchEpisodeBySerie();
-                break;
-            case 0:
-                System.out.println("Leaving...");
-                break;
-            default:
-                System.out.println("Invalid option");
+            switch (opcao) {
+                case 1:
+                    searchSerieWeb();
+                    break;
+                case 2:
+                    searchEpisodeBySerie();
+                    break;
+                case 3:
+                    listSearchedSeries();
+                    break;
+                case 0:
+                    System.out.println("Leaving...");
+                    break;
+                default:
+                    System.out.println("Invalid option");
+                    break;
+            }
         }
+    }
+
+    private void listSearchedSeries() {
+        listSerie.forEach(System.out::println);
     }
 
     private void searchSerieWeb() {
         DataSerie data = getDataSerie();
+        listSerie.add(data);
         System.out.println(data);
     }
 
