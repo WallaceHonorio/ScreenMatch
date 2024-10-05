@@ -1,11 +1,9 @@
 package com.walla_ho.screenmatch.main;
 
-import com.walla_ho.screenmatch.model.DataEpisode;
-import com.walla_ho.screenmatch.model.DataSeason;
-import com.walla_ho.screenmatch.model.DataSerie;
-import com.walla_ho.screenmatch.model.Episode;
+import com.walla_ho.screenmatch.model.*;
 import com.walla_ho.screenmatch.service.ConsumeAPI;
 import com.walla_ho.screenmatch.service.DataConvert;
+import com.walla_ho.screenmatch.service.QueryChatGPT;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -29,6 +27,7 @@ public class main {
                     1 - Search by series.
                     2 - Search by episodes.
                     3 - List series.
+                    4 - Where can I watch my series.
                     
                     0 - Logout                                 
                     """;
@@ -47,6 +46,9 @@ public class main {
                 case 3:
                     listSearchedSeries();
                     break;
+                case 4:
+                    whereWatch();
+                    break;
                 case 0:
                     System.out.println("Leaving...");
                     break;
@@ -55,10 +57,6 @@ public class main {
                     break;
             }
         }
-    }
-
-    private void listSearchedSeries() {
-        listSerie.forEach(System.out::println);
     }
 
     private void searchSerieWeb() {
@@ -84,5 +82,23 @@ public class main {
             temporadas.add(dataSeason);
         }
         temporadas.forEach(System.out::println);
+    }
+
+    private void listSearchedSeries() {
+        List<Serie> series = new ArrayList<>();
+
+        series = listSerie.stream()
+                    .map(d -> new Serie(d))
+                    .collect(Collectors.toList());
+
+        series.stream()
+                .sorted(Comparator.comparing(Serie::getGender))
+                .forEach(System.out::println);
+    }
+
+    private void whereWatch() {
+        System.out.println("Write the serie name to search:");
+        var nameSerie = read.nextLine();
+        System.out.println(QueryChatGPT.getWatch(nameSerie));
     }
 }
