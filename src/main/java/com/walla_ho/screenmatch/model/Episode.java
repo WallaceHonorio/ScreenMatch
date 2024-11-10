@@ -1,15 +1,26 @@
 package com.walla_ho.screenmatch.model;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
+//@Entity
+//@Table(name = "episodes")
 public class Episode {
+
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     private String title;
     private Integer season;
     private Integer episode;
     private Double imdbRating;
     private LocalDate released;
+
+    @ManyToOne
+    private Serie serie;
 
     public Episode(Integer numberSeason, DataEpisode dataEpisode) {
         this.season = numberSeason;
@@ -28,6 +39,14 @@ public class Episode {
             this.released = LocalDate.ofEpochDay(0);
         }
     }
+
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
     public String getTitle() {
         return title;

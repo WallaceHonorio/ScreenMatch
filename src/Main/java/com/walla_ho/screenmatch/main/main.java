@@ -1,9 +1,11 @@
 package com.walla_ho.screenmatch.main;
 
 import com.walla_ho.screenmatch.model.*;
+import com.walla_ho.screenmatch.repository.SerieRepository;
 import com.walla_ho.screenmatch.service.ConsumeAPI;
 import com.walla_ho.screenmatch.service.DataConvert;
-import com.walla_ho.screenmatch.service.QueryChatGPT;
+import org.springframework.beans.factory.annotation.Autowired;
+//import com.walla_ho.screenmatch.service.QueryChatGPT;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -18,7 +20,11 @@ public class main {
     private final String  ADDRESS = "http://www.omdbapi.com/?t=";
     private final String  APIKEY = "&apikey=6585022c";
     private List<DataSerie> listSerie = new ArrayList<>();
+    private SerieRepository repository;
 
+    public main(SerieRepository repository) {
+        this.repository = repository;
+    }
 
     public void showMenu(){
         var opcao = -1;
@@ -27,7 +33,6 @@ public class main {
                     1 - Search by series.
                     2 - Search by episodes.
                     3 - List series.
-                    4 - Where can I watch my series.
                     
                     0 - Logout                                 
                     """;
@@ -46,9 +51,6 @@ public class main {
                 case 3:
                     listSearchedSeries();
                     break;
-                case 4:
-                    whereWatch();
-                    break;
                 case 0:
                     System.out.println("Leaving...");
                     break;
@@ -61,7 +63,8 @@ public class main {
 
     private void searchSerieWeb() {
         DataSerie data = getDataSerie();
-        listSerie.add(data);
+        Serie serie = new Serie(data);
+        repository.save(serie);
         System.out.println(data);
     }
 
@@ -85,20 +88,16 @@ public class main {
     }
 
     private void listSearchedSeries() {
-        List<Serie> series = new ArrayList<>();
-
-        series = listSerie.stream()
-                    .map(d -> new Serie(d))
-                    .collect(Collectors.toList());
+        List<Serie> series = repository.findAll();
 
         series.stream()
                 .sorted(Comparator.comparing(Serie::getGender))
                 .forEach(System.out::println);
     }
 
-    private void whereWatch() {
-        System.out.println("Write the serie name to search:");
-        var nameSerie = read.nextLine();
-        System.out.println(QueryChatGPT.getWatch(nameSerie));
-    }
+//    private void whereWatch() {
+//        System.out.println("Write the serie name to search:");
+//        var nameSerie = read.nextLine();
+//        System.out.println(QueryChatGPT.getWatch(nameSerie));
+//    }
 }
