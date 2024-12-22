@@ -19,7 +19,7 @@ public class main {
     private DataConvert convert = new DataConvert();
     private final String  ADDRESS = "http://www.omdbapi.com/?t=";
     private final String  APIKEY = "&apikey=6585022c";
-    private List<DataSerie> listSerie = new ArrayList<>();
+    private List<Serie> listSerie = new ArrayList<>();
     private SerieRepository repository;
 
     public main(SerieRepository repository) {
@@ -76,21 +76,43 @@ public class main {
     }
 
     private void searchEpisodeBySerie(){
-        DataSerie dataSerie = getDataSerie();
-        List<DataSeason> temporadas = new ArrayList<>();
+        listSearchedSeries();
 
-        for (int i = 1; i <= dataSerie.totalSeasons(); i++) {
-            var json = consumeAPI.getData(ADDRESS + dataSerie.title().replace(" ", "+") + "&season=" + i + APIKEY);
-            DataSeason dataSeason = convert.consumeData(json, DataSeason.class);
-            temporadas.add(dataSeason);
+        System.out.println("Choose a series by name:");
+        var nameSerie = read.nextLine();
+
+        Optional<Serie> serie = listSerie.stream()
+                .filter(s -> s.getTitle().toLowerCase().contains(nameSerie.toLowerCase()))
+                .findFirst();
+
+        if(serie.isPresent()){
+            var serieFounded = serie.get();
+
+            List<DataSeason> seasons = new ArrayList<>();
+
+            for (int i = 1; i <= serieFounded.getTotalSeasons(); i++) {
+                var json = consumeAPI.getData(ADDRESS + serieFounded.getTitle().replace(" ", "+") + "&season=" + i + APIKEY);
+                DataSeason dataSeason = convert.consumeData(json, DataSeason.class);
+                seasons.add(dataSeason);
+            }
+            seasons.forEach(System.out::println);
+
+            List<Episode> episodes = seasons.stream()
+                    .flatMap(d -> d.episodes().stream()
+                            .map(e -> new Episode(d.season(), e)))
+                    .collect(Collectors.toList());
+
+            serieFounded.setEpisodes(episodes);
+            repository.save(serieFounded);
+        } else {
+            System.out.println("Serie not founded.");
         }
-        temporadas.forEach(System.out::println);
     }
 
     private void listSearchedSeries() {
-        List<Serie> series = repository.findAll();
+        listSerie = repository.findAll();
 
-        series.stream()
+        listSerie.stream()
                 .sorted(Comparator.comparing(Serie::getGender))
                 .forEach(System.out::println);
     }

@@ -28,8 +28,7 @@ public class Serie {
     private String summary;
     private String poster;
 
-    @Transient
-    //    @OneToMany(mappedBy = "serie")
+    @OneToMany(mappedBy = "serie")
     private List<Episode> episodes = new ArrayList<>();
 
     public Serie() { }

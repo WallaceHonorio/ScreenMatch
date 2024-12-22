@@ -5,13 +5,13 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
-//@Entity
-//@Table(name = "episodes")
+@Entity
+@Table(name = "episodes")
 public class Episode {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String title;
     private Integer season;
@@ -21,6 +21,8 @@ public class Episode {
 
     @ManyToOne
     private Serie serie;
+
+    public Episode() { }
 
     public Episode(Integer numberSeason, DataEpisode dataEpisode) {
         this.season = numberSeason;
@@ -40,13 +42,21 @@ public class Episode {
         }
     }
 
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Serie getSerie() {
+        return serie;
+    }
+
+    public void setSerie(Serie serie) {
+        this.serie = serie;
+    }
 
     public String getTitle() {
         return title;
