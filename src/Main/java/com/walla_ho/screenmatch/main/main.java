@@ -30,9 +30,10 @@ public class main {
         var opcao = -1;
         while(opcao != 0) {
             var menu = """
-                    1 - Search by series.
-                    2 - Search by episodes.
+                    1 - Search by series web.
+                    2 - Search by title episodes.
                     3 - List series.
+                    4 - Search by title series.
                     
                     0 - Logout                                 
                     """;
@@ -50,6 +51,9 @@ public class main {
                     break;
                 case 3:
                     listSearchedSeries();
+                    break;
+                case 4:
+                    searchSerieTitle();
                     break;
                 case 0:
                     System.out.println("Leaving...");
@@ -81,9 +85,7 @@ public class main {
         System.out.println("Choose a series by name:");
         var nameSerie = read.nextLine();
 
-        Optional<Serie> serie = listSerie.stream()
-                .filter(s -> s.getTitle().toLowerCase().contains(nameSerie.toLowerCase()))
-                .findFirst();
+        Optional<Serie> serie = repository.findBytitleContainingIgnoreCase(nameSerie);
 
         if(serie.isPresent()){
             var serieFounded = serie.get();
@@ -115,6 +117,20 @@ public class main {
         listSerie.stream()
                 .sorted(Comparator.comparing(Serie::getGender))
                 .forEach(System.out::println);
+    }
+
+    private void searchSerieTitle() {
+        System.out.println("Choose a series by name:");
+        var nameSerie = read.nextLine();
+
+        Optional<Serie> seachedSerie = repository.findBytitleContainingIgnoreCase(nameSerie);
+
+        if(seachedSerie.isPresent()){
+            System.out.println("Serie data: " + seachedSerie.get());
+        } else {
+            System.out.println("Serie not founded.");
+        }
+
     }
 
 //    private void whereWatch() {
