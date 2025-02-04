@@ -34,6 +34,7 @@ public class main {
                     2 - Search by title episodes.
                     3 - List series.
                     4 - Search by title series.
+                    5 - Search series by actor.
                     
                     0 - Logout                                 
                     """;
@@ -54,6 +55,9 @@ public class main {
                     break;
                 case 4:
                     searchSerieTitle();
+                    break;
+                case 5:
+                    searchSerieActor();
                     break;
                 case 0:
                     System.out.println("Leaving...");
@@ -85,7 +89,7 @@ public class main {
         System.out.println("Choose a series by name:");
         var nameSerie = read.nextLine();
 
-        Optional<Serie> serie = repository.findBytitleContainingIgnoreCase(nameSerie);
+        Optional<Serie> serie = repository.findByTitleContainingIgnoreCase(nameSerie);
 
         if(serie.isPresent()){
             var serieFounded = serie.get();
@@ -123,13 +127,29 @@ public class main {
         System.out.println("Choose a series by name:");
         var nameSerie = read.nextLine();
 
-        Optional<Serie> seachedSerie = repository.findBytitleContainingIgnoreCase(nameSerie);
+        Optional<Serie> seachedSerie = repository.findByTitleContainingIgnoreCase(nameSerie);
 
         if(seachedSerie.isPresent()){
             System.out.println("Serie data: " + seachedSerie.get());
         } else {
             System.out.println("Serie not founded.");
         }
+    }
+
+    private void searchSerieActor() {
+        System.out.println("Choose a series by actor:");
+        var nameActor = read.nextLine();
+
+        System.out.println("Choose the Imdb rating minimum value:");
+        var ratingValuie = read.nextDouble();
+
+        List<Serie> seachedSeries = repository.findByActorsContainingIgnoreCaseAndImdbRatingGreaterThanEqual(nameActor,ratingValuie);
+
+        System.out.println("Series " + nameActor + " worked on:");
+        System.out.println(seachedSeries);
+
+        seachedSeries.forEach(s ->
+                System.out.println(s.getTitle() + "Imdb Rating: " + s.getImdbRating()));
 
     }
 
