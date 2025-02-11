@@ -4,13 +4,9 @@ import com.walla_ho.screenmatch.model.*;
 import com.walla_ho.screenmatch.repository.SerieRepository;
 import com.walla_ho.screenmatch.service.ConsumeAPI;
 import com.walla_ho.screenmatch.service.DataConvert;
-import org.springframework.beans.factory.annotation.Autowired;
 //import com.walla_ho.screenmatch.service.QueryChatGPT;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class main {
@@ -35,6 +31,8 @@ public class main {
                     3 - List series.
                     4 - Search by title series.
                     5 - Search series by actor.
+                    6 - Search top 5 series.
+                    7 - Search by category.
                     
                     0 - Logout                                 
                     """;
@@ -58,6 +56,12 @@ public class main {
                     break;
                 case 5:
                     searchSerieActor();
+                    break;
+                case 6:
+                    searchTopFive();
+                    break;
+                case 7:
+                    searchSerieByCategory();
                     break;
                 case 0:
                     System.out.println("Leaving...");
@@ -151,6 +155,26 @@ public class main {
         seachedSeries.forEach(s ->
                 System.out.println(s.getTitle() + "Imdb Rating: " + s.getImdbRating()));
 
+    }
+
+    private void searchTopFive() {
+        List<Serie> serieTop5 = repository.findTop5ByOrderByImdbRating();
+
+        serieTop5.forEach(s ->
+                System.out.println(s.getTitle() + " -> Imdb Rating: " + s.getImdbRating()));
+    }
+
+
+    private void searchSerieByCategory() {
+        System.out.println("Choose the category:");
+        var nameCategory = read.nextLine();
+
+        Category category = Category.fromString(nameCategory);
+
+        List<Serie> serieCategory = repository.findByGender(category);
+
+        serieCategory.forEach(s ->
+                System.out.println(s.getTitle() + " -> Category: " + s.getGender()));
     }
 
 //    private void whereWatch() {
