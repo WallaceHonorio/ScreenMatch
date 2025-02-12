@@ -3,6 +3,8 @@ package com.walla_ho.screenmatch.model;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record DataSerie (@JsonProperty("Title") String title,

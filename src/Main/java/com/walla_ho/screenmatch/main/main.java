@@ -63,6 +63,9 @@ public class main {
                 case 7:
                     searchSerieByCategory();
                     break;
+                case 8:
+                    searchSerieBySeasonAndImdbRating();
+                    break;
                 case 0:
                     System.out.println("Leaving...");
                     break;
@@ -175,6 +178,19 @@ public class main {
 
         serieCategory.forEach(s ->
                 System.out.println(s.getTitle() + " -> Category: " + s.getGender()));
+    }
+
+    private void searchSerieBySeasonAndImdbRating(){
+        System.out.println("Filtrar séries até quantas temporadas? ");
+        var totalSeasons = read.nextInt();
+        read.nextLine();
+        System.out.println("Com avaliação a partir de que valor? ");
+        var imdbRating = read.nextDouble();
+        read.nextLine();
+        List<Serie> filtroSeries = repository.findByTotalSeasonsLessThanEqualAndImdbRatingGreaterThanEqual(totalSeasons, imdbRating);
+        System.out.println("*** Séries filtradas ***");
+        filtroSeries.forEach(s ->
+                System.out.println(s.getTitle() + "  - Imdb Rating: " + s.getImdbRating()));
     }
 
 //    private void whereWatch() {

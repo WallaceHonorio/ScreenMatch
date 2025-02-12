@@ -15,4 +15,7 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
     List<Serie> findTop5ByOrderByImdbRating();
 
     List<Serie> findByGender(Category category);
+
+    List<Serie> findByTotalSeasonsLessThanEqualAndImdbRatingGreaterThanEqual(int totalSeasons, double imdbRating);
+
 }
