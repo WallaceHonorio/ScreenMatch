@@ -187,7 +187,9 @@ public class main {
         System.out.println("Com avaliação a partir de que valor? ");
         var imdbRating = read.nextDouble();
         read.nextLine();
-        List<Serie> filtroSeries = repository.findByTotalSeasonsLessThanEqualAndImdbRatingGreaterThanEqual(totalSeasons, imdbRating);
+        //List<Serie> filtroSeries = repository.findByTotalSeasonsLessThanEqualAndImdbRatingGreaterThanEqual(totalSeasons, imdbRating);
+        //List<Serie> filtroSeries = repository.serieByTotalSeasonsAndImdbRating(); //@Query
+        List<Serie> filtroSeries = repository.serieByTotalSeasonsAndImdbRating(totalSeasons, imdbRating); //@Query JPQL
         System.out.println("*** Séries filtradas ***");
         filtroSeries.forEach(s ->
                 System.out.println(s.getTitle() + "  - Imdb Rating: " + s.getImdbRating()));
