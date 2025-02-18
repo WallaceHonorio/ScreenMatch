@@ -33,6 +33,8 @@ public class main {
                     5 - Search series by actor.
                     6 - Search top 5 series.
                     7 - Search by category.
+                    8 - Search by season and rating.
+                    9 - Search by excerpt.
                     
                     0 - Logout                                 
                     """;
@@ -65,6 +67,9 @@ public class main {
                     break;
                 case 8:
                     searchSerieBySeasonAndImdbRating();
+                    break;
+                case 9:
+                    searchEpisodeByExcerpt();
                     break;
                 case 0:
                     System.out.println("Leaving...");
@@ -193,6 +198,16 @@ public class main {
         System.out.println("*** Séries filtradas ***");
         filtroSeries.forEach(s ->
                 System.out.println(s.getTitle() + "  - Imdb Rating: " + s.getImdbRating()));
+    }
+
+    private void searchEpisodeByExcerpt() {
+        System.out.println("What is the name of the episode to search for?");
+        var excerptEpisode = read.nextLine();
+        List<Episode> episodeFounded = repository.episodeByExcerpt(excerptEpisode);
+        episodeFounded.forEach(e ->
+                System.out.printf("Serie: %s Season %s - Episode %s - %s\n",
+                        e.getSerie().getTitle(), e.getSeason(),
+                        e.getEpisode(), e.getTitle()));
     }
 
 //    private void whereWatch() {

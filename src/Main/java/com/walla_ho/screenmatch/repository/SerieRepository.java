@@ -1,6 +1,7 @@
 package com.walla_ho.screenmatch.repository;
 
 import com.walla_ho.screenmatch.model.Category;
+import com.walla_ho.screenmatch.model.Episode;
 import com.walla_ho.screenmatch.model.Serie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,5 +23,8 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
     //@Query(value = "select * from series WHERE series.totalSeasons <= :totalSeasons AND series.imdbRating >= :imdbRating", nativeQuery = true)
     @Query(value = "select s from Serie s WHERE s.totalSeasons <= :totalSeasons AND s.imdbRating >= :imdbRating")
     List<Serie> serieByTotalSeasonsAndImdbRating(int totalSeasons, double imdbRating);
+
+    @Query("SELECT e FROM Serie s JOIN s.episodes e WHERE e.title ILIKE %:excerptEpisode%")
+    List<Episode> episodeByExcerpt(String excerptEpisode);
 
 }
