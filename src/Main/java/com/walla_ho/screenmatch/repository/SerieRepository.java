@@ -27,4 +27,6 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
     @Query("SELECT e FROM Serie s JOIN s.episodes e WHERE e.title ILIKE %:excerptEpisode%")
     List<Episode> episodeByExcerpt(String excerptEpisode);
 
+    @Query("SELECT e FROM Serie s JOIN s.episodes e WHERE s = :serie ORDER BY e.imdbRating DESC LIMIT 5")
+    List<Episode> topEpisodesBySerie(Serie serie);
 }

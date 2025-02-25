@@ -17,6 +17,7 @@ public class main {
     private final String  APIKEY = "&apikey=6585022c";
     private List<Serie> listSerie = new ArrayList<>();
     private SerieRepository repository;
+    private Optional<Serie> seachedSerie;
 
     public main(SerieRepository repository) {
         this.repository = repository;
@@ -35,6 +36,7 @@ public class main {
                     7 - Search by category.
                     8 - Search by season and rating.
                     9 - Search by excerpt.
+                    10 - Search Episodes top 5 by serie.
                     
                     0 - Logout                                 
                     """;
@@ -70,6 +72,9 @@ public class main {
                     break;
                 case 9:
                     searchEpisodeByExcerpt();
+                    break;
+                case 10:
+                    topEpisodesBySerie();
                     break;
                 case 0:
                     System.out.println("Leaving...");
@@ -139,7 +144,7 @@ public class main {
         System.out.println("Choose a series by name:");
         var nameSerie = read.nextLine();
 
-        Optional<Serie> seachedSerie = repository.findByTitleContainingIgnoreCase(nameSerie);
+        seachedSerie = repository.findByTitleContainingIgnoreCase(nameSerie);
 
         if(seachedSerie.isPresent()){
             System.out.println("Serie data: " + seachedSerie.get());
@@ -208,6 +213,21 @@ public class main {
                 System.out.printf("Serie: %s Season %s - Episode %s - %s\n",
                         e.getSerie().getTitle(), e.getSeason(),
                         e.getEpisode(), e.getTitle()));
+    }
+
+    private void topEpisodesBySerie() {
+        searchSerieTitle();
+
+        if(seachedSerie.isPresent()){
+            Serie serie = seachedSerie.get();
+            List<Episode> topEpisode = repository.topEpisodesBySerie(serie);
+
+            topEpisode.forEach(e ->
+                    System.out.printf("Serie: %s Season %s - Episode %s - %s\n",
+                            e.getSerie().getTitle(), e.getSeason(),
+                            e.getEpisode(), e.getTitle()));
+        }
+
     }
 
 //    private void whereWatch() {
