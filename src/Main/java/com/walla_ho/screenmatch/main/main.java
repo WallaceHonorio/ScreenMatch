@@ -37,6 +37,7 @@ public class main {
                     8 - Search by season and rating.
                     9 - Search by excerpt.
                     10 - Search Episodes top 5 by serie.
+                    11 - Search for episodes from a date
                     
                     0 - Logout                                 
                     """;
@@ -75,6 +76,9 @@ public class main {
                     break;
                 case 10:
                     topEpisodesBySerie();
+                    break;
+                case 11:
+                    searchEpisodesAfterADate();
                     break;
                 case 0:
                     System.out.println("Leaving...");
@@ -227,7 +231,24 @@ public class main {
                             e.getSerie().getTitle(), e.getSeason(),
                             e.getEpisode(), e.getTitle()));
         }
+    }
 
+    private void searchEpisodesAfterADate() {
+        searchSerieTitle();
+
+        if(seachedSerie.isPresent()){
+            Serie serie = seachedSerie.get();
+            System.out.println("Enter the release deadline year:");
+            var yearRelease = read.nextInt();
+            read.nextLine();
+
+            List<Episode> episodesYear = repository.episodeBySerieANDYear(serie, yearRelease);
+
+            episodesYear.forEach(e ->
+                    System.out.printf("Serie: %s Season %s - Episode %s - %s\n",
+                            e.getSerie().getTitle(), e.getSeason(),
+                            e.getEpisode(), e.getTitle()));
+        }
     }
 
 //    private void whereWatch() {

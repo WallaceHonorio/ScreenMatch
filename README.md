@@ -6,6 +6,7 @@ Concepts:
 - Java 22;
 - maven;
 - jackson;
+- SQL;
 - postgresql;
 - JPQL;
 - JPA;
