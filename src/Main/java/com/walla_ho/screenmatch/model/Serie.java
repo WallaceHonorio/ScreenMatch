@@ -45,6 +45,10 @@ public class Serie {
         this.poster = dataSerie.poster();
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }
