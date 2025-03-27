@@ -1,26 +1,38 @@
 package com.walla_ho.screenmatch.controller;
 
 import com.walla_ho.screenmatch.dto.SerieDTO;
-import com.walla_ho.screenmatch.repository.SerieRepository;
+import com.walla_ho.screenmatch.service.SerieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/series")
 public class SerieController {
 
     @Autowired
-    private SerieRepository repository;
+    SerieService service;
 
-    @GetMapping("/series")
+    @GetMapping
     public List<SerieDTO> getSeries(){
-        return repository.findAll()
-                .stream()
-                .map(s -> new SerieDTO (s.getId(), s.getTitle(), s.getYear(), s.getReleased(), s.getGender(), s.getTotalSeasons(), s.getImdbRating(), s.getActors(), s.getSummary(), s.getPoster()))
-                .collect(Collectors.toList());
+        return service.getAllSeries();
+    }
+
+    @GetMapping("/top5")
+    public List<SerieDTO> getTop5Series(){
+        return service.getTop5Series();
+    }
+
+    @GetMapping("/lancamentos")
+    public List<SerieDTO> getReleasedSeries(){
+        return service.getTop5Released();
+    }
+
+    @GetMapping("/starter")
+    public String returnStarter() {
+        return "Welcome to Screenmatch!";
     }
 }
