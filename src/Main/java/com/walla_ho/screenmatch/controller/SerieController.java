@@ -4,6 +4,7 @@ import com.walla_ho.screenmatch.dto.SerieDTO;
 import com.walla_ho.screenmatch.service.SerieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,5 +35,10 @@ public class SerieController {
     @GetMapping("/starter")
     public String returnStarter() {
         return "Welcome to Screenmatch!";
+    }
+
+    @GetMapping("/{id}")
+    public SerieDTO getById(@PathVariable Long id) {
+        return service.getById(id);
     }
 }
