@@ -1,6 +1,8 @@
 package com.walla_ho.screenmatch.controller;
 
+import com.walla_ho.screenmatch.dto.EpisodeDTO;
 import com.walla_ho.screenmatch.dto.SerieDTO;
+import com.walla_ho.screenmatch.model.Episode;
 import com.walla_ho.screenmatch.service.SerieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,5 +42,10 @@ public class SerieController {
     @GetMapping("/{id}")
     public SerieDTO getById(@PathVariable Long id) {
         return service.getById(id);
+    }
+
+    @GetMapping("/{id}/temporadas/todas")
+    public List<EpisodeDTO> getAllSeason(@PathVariable Long id) {
+        return service.getAllSeason(id);
     }
 }

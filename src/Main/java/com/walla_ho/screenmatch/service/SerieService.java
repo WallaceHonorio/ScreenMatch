@@ -1,12 +1,11 @@
 package com.walla_ho.screenmatch.service;
 
+import com.walla_ho.screenmatch.dto.EpisodeDTO;
 import com.walla_ho.screenmatch.dto.SerieDTO;
-import com.walla_ho.screenmatch.model.Category;
 import com.walla_ho.screenmatch.model.Serie;
 import com.walla_ho.screenmatch.repository.SerieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +46,20 @@ public class SerieService {
                                  s.getGender(), s.getTotalSeasons(),
                                  s.getImdbRating(), s.getActors(),
                                  s.getSummary(), s.getPoster());
+        }
+
+        //if not
+        return null;
+    }
+
+    public List<EpisodeDTO> getAllSeason(Long id) {
+        Optional<Serie> serie = repository.findById(id);
+
+        if(serie.isPresent()){
+            Serie s = serie.get();
+            return s.getEpisodes().stream()
+                    .map(e -> new EpisodeDTO(e.getSeason(), e.getEpisode(), e.getTitle()))
+                    .collect(Collectors.toList());
         }
 
         //if not
