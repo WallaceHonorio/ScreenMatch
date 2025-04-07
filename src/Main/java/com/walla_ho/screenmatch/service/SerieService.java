@@ -32,7 +32,6 @@ public class SerieService {
                 .collect(Collectors.toList());
     }
 
-
     public List<SerieDTO> getTop5Released() {
         return convertSerieDTO(repository.findEpisodesMoreRecent());
     }
@@ -77,5 +76,12 @@ public class SerieService {
     public List<SerieDTO> getSeriesByCategory(String nameCategory) {
         Category category = Category.fromString(nameCategory);
         return convertSerieDTO(repository.findByGender(category));
+    }
+
+    public List<EpisodeDTO> getTop5Episode(Long id) {
+        return repository.getTop5Episode(id)
+                .stream()
+                .map(e -> new EpisodeDTO(e.getSeason(), e.getEpisode(), e.getTitle()))
+                .collect(Collectors.toList());
     }
 }
