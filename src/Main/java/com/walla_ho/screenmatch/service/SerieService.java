@@ -2,6 +2,7 @@ package com.walla_ho.screenmatch.service;
 
 import com.walla_ho.screenmatch.dto.EpisodeDTO;
 import com.walla_ho.screenmatch.dto.SerieDTO;
+import com.walla_ho.screenmatch.model.Category;
 import com.walla_ho.screenmatch.model.Serie;
 import com.walla_ho.screenmatch.repository.SerieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,5 +72,10 @@ public class SerieService {
                 .stream()
                 .map(e -> new EpisodeDTO(e.getSeason(), e.getEpisode(), e.getTitle()))
                 .collect(Collectors.toList());
+    }
+
+    public List<SerieDTO> getSeriesByCategory(String nameCategory) {
+        Category category = Category.fromString(nameCategory);
+        return convertSerieDTO(repository.findByGender(category));
     }
 }
